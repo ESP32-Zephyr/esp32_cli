@@ -1,4 +1,4 @@
-ARTIFACT_NAME := esp32_cli
+ARTIFACT_NAME := esp32_shell
 
 build:
 	@go build -o bin/${ARTIFACT_NAME} cmd/${ARTIFACT_NAME}/main.go
