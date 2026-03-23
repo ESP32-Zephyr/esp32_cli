@@ -1,3 +1,9 @@
+github.com/ESP32-Zephyr/esp32_zephyr_goapi v1.0.2 h1:ra1Lf6Phpvc5wAkoLbmwmyi6MtXpo3FMPfq+eifiRsc=
+github.com/ESP32-Zephyr/esp32_zephyr_goapi v1.0.2/go.mod h1:jd01T2tFKDcgz6hiCKNx2388mOe+K8mlP0g79ELZVN8=
+github.com/ESP32-Zephyr/esp32_zephyr_goapi v1.0.3-0.20260322181923-9a473c57715c h1:R51M4Z4zaBO6vYEi2CMJ9l8mhGDs2wkJ4WKJWhHbzH4=
+github.com/ESP32-Zephyr/esp32_zephyr_goapi v1.0.3-0.20260322181923-9a473c57715c/go.mod h1:jd01T2tFKDcgz6hiCKNx2388mOe+K8mlP0g79ELZVN8=
+github.com/ESP32-Zephyr/esp32_zephyr_goapi v1.0.3-0.20260323071935-8329c519e0e1 h1:PL9FJkq8d/Ttnb7ubRwT9nbd9T+bLfvUv8IyK9eUAJU=
+github.com/ESP32-Zephyr/esp32_zephyr_goapi v1.0.3-0.20260323071935-8329c519e0e1/go.mod h1:jd01T2tFKDcgz6hiCKNx2388mOe+K8mlP0g79ELZVN8=
 github.com/cpuguy83/go-md2man/v2 v2.0.6/go.mod h1:oOW0eioCTA6cOiMLiUPZOpcVxMig6NIQQ7OS05n1F4g=
 github.com/inconshreveable/mousetrap v1.1.0 h1:wN+x4NVGpMsO7ErUn/mUI3vEoE6Jt13X2s0bqwp9tc8=
 github.com/inconshreveable/mousetrap v1.1.0/go.mod h1:vpF70FUmC8bwa3OWnCshd2FqLfsEA9PFc4w1p2J65bw=
@@ -13,4 +19,6 @@ github.com/spf13/pflag v1.0.9/go.mod h1:McXfInJRrz4CZXVZOBLb0bTZqETkiAhM9Iw0y3An
 go.yaml.in/yaml/v3 v3.0.4/go.mod h1:DhzuOOF2ATzADvBadXxruRBLzYTpT36CKvDb3+aBEFg=
 golang.org/x/sys v0.0.0-20211117180635-dee7805ff2e1 h1:kwrAHlwJ0DUBZwQ238v+Uod/3eZ8B2K5rYsUHBQvzmI=
 golang.org/x/sys v0.0.0-20211117180635-dee7805ff2e1/go.mod h1:oPkhp1MJrh7nUepCBck5+mAzfO9JrbApNNgaTdGDITg=
+google.golang.org/protobuf v1.36.11 h1:fV6ZwhNocDyBLK0dj+fg8ektcVegBBuEolpbTQyBNVE=
+google.golang.org/protobuf v1.36.11/go.mod h1:HTf+CrKn2C3g5S8VImy6tdcUvCska2kB7j23XfzDpco=
 gopkg.in/check.v1 v0.0.0-20161208181325-20d25e280405/go.mod h1:Co6ibVJAznAaIkqp8huTwlJQCZ016jof/cbN4VW5Yz0=

@@ -8,11 +8,17 @@ import (
 
 	"github.com/spf13/cobra"
 	"github.com/peterh/liner"
+
+	"github.com/ESP32-Zephyr/esp32_zephyr_goapi/api"
 )
+
+const appPort = 4242
 
 type shellState struct {
 	prompt string
+	state string
 	greeting string 
+	es32client *api.Esp32Client
 }
 
 var shell = shellState{
@@ -31,18 +37,46 @@ func (s *shellState) greetingPrint () {
 	fmt.Println(s.greeting)
 }
 
-func (s *shellState) setPrompt (state string) {
-	s.prompt = state
+func (s *shellState) setState (state string) {
+	s.state = state
+	if state == "connected" {
+		s.prompt = s.es32client.Ipv4 + " > "
+	} else {
+		s.prompt = "> "
+	}
 }
 
 func (s *shellState) getPrompt () string {
 	return s.prompt
 }
 
+func (s *shellState) sendPing() bool {
+	var success = false
+
+	pong, err := s.es32client.Ping()
+	if err != nil {
+		fmt.Println("Error:", err)
+		s.setState("disconnected")
+	} else {
+		pong := pong.GetPong()
+		if pong == "pong" {
+			s.setState("connected")
+			success = true
+		}
+	}
+
+	return success
+}
+
+func (s *shellState) connect (transport, ipv4 string, destPort uint16) {
+	s.es32client, _ = api.NewEsp32Client(transport, ipv4, destPort)
+	s.sendPing()
+}
+
 var historyPath string
 
 var rootCmd = &cobra.Command{
-		Use:   "ESP32",
+		Use:   "esp32_shell",
 		Short: "Interactive ESP32 shell",
 		Long:  `Interactive ESP32 shell`,
 		Run: func(cmd *cobra.Command, args []string) {
@@ -55,6 +89,7 @@ func Init() {
 	historyPath = filepath.Join(homeDir, ".esp32_shell_history")
 		
 	rootCmd.AddCommand(testCmd())
+	rootCmd.AddCommand(connectCmd())
 }
 
 func Execute() {
@@ -107,6 +142,20 @@ func shellLoop(root *cobra.Command) {
 		f.Close()
 	}	
 }
+
+func connectCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "connect",
+		Short: "connect to esp32",
+		Args:  cobra.MaximumNArgs(2),
+		Run: func(cmd *cobra.Command, args []string) {
+			if len(args) > 0 {
+				shell.connect(args[0], args[1], appPort)
+			}
+		},
+	}
+}
+
 
 func testCmd() *cobra.Command {
 	return &cobra.Command{
