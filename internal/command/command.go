@@ -13,6 +13,16 @@ import (
 )
 
 const appPort = 4242
+var historyPath string
+
+var rootCmd = &cobra.Command{
+	Use:   "esp32_shell",
+	Short: "Interactive ESP32 shell",
+	Long:  `Interactive ESP32 shell`,
+	Run: func(cmd *cobra.Command, args []string) {
+		shellLoop(cmd)
+	},
+}
 
 type shellState struct {
 	prompt string
@@ -73,16 +83,17 @@ func (s *shellState) connect (transport, ipv4 string, destPort uint16) {
 	s.sendPing()
 }
 
-var historyPath string
-
-var rootCmd = &cobra.Command{
-		Use:   "esp32_shell",
-		Short: "Interactive ESP32 shell",
-		Long:  `Interactive ESP32 shell`,
-		Run: func(cmd *cobra.Command, args []string) {
-			shellLoop(cmd)
-		},
+func (s *shellState) adc_chs_get () uint32 {
+	if s.sendPing() {
+		res, err := s.es32client.AdcChsGet()
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+		return res.GetAdcChs()
 	}
+
+	return 0
+}
 
 func Init() {
 	homeDir, _ := os.UserHomeDir()
@@ -90,6 +101,7 @@ func Init() {
 		
 	rootCmd.AddCommand(testCmd())
 	rootCmd.AddCommand(connectCmd())
+	rootCmd.AddCommand(adcCmd())	
 }
 
 func Execute() {
@@ -156,6 +168,19 @@ func connectCmd() *cobra.Command {
 	}
 }
 
+func adcCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "adc",
+		Short: "ADC commands",
+		Args:  cobra.MaximumNArgs(2),
+		Run: func(cmd *cobra.Command, args []string) {
+			if len(args) == 0 {
+				channels := shell.adc_chs_get()
+				fmt.Printf("%d\n", channels)
+			} 
+		},
+	}
+}
 
 func testCmd() *cobra.Command {
 	return &cobra.Command{
