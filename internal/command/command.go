@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"strconv"
 	"path/filepath"
 
 	"github.com/spf13/cobra"
@@ -95,6 +96,18 @@ func (s *shellState) adc_chs_get () uint32 {
 	return 0
 }
 
+func (s *shellState) adc_ch_get (ch uint32) uint32 {
+	if s.sendPing() {
+		res, err := s.es32client.AdcChRead(ch)
+		if err != nil {
+			fmt.Println("Error:", err)
+		}
+		return res.GetVal()
+	}
+
+	return 0
+}
+
 func Init() {
 	homeDir, _ := os.UserHomeDir()
 	historyPath = filepath.Join(homeDir, ".esp32_shell_history")
@@ -177,7 +190,15 @@ func adcCmd() *cobra.Command {
 			if len(args) == 0 {
 				channels := shell.adc_chs_get()
 				fmt.Printf("%d\n", channels)
-			} 
+			} else if len(args) == 1 {
+				ch_id, err := strconv.ParseUint(args[0], 10, 32)
+				if err != nil {
+					fmt.Printf("Error: %v\n", err)
+					return
+				}				
+				adc_value := shell.adc_ch_get(uint32(ch_id))
+				fmt.Printf("%d\n", adc_value)
+			}
 		},
 	}
 }
